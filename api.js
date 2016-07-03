@@ -40,9 +40,62 @@ module.exports = function(wagner) {
       { path: 'data.cart.product', model: 'Product' },
       handleOne.bind(null, 'user', res));
   });
+  
+   api.get('/user', wagner.invoke(function(User) {
+    return function(req, res) {
+      User.
+        find({}).
+        sort({ name: 1 }).
+        exec(function(error, users) {
+          if (error) {
+            return res.
+              status(status.INTERNAL_SERVER_ERROR).
+              json({ error: error.toString() });
+          }
+          res.json({ users: users });
+        });
+    };
+    
+    
+  }));
+  
+  api.get('/team', wagner.invoke(function(Team) {
+    return function(req, res) {
+      Team.
+        find({}).
+        sort({ name: 1 }).
+        exec(function(error, teams) {
+          if (error) {
+            return res.
+              status(status.INTERNAL_SERVER_ERROR).
+              json({ error: error.toString() });
+          }
+          res.json({ teams: teams });
+        });
+    };
+  }));
+  
+    api.get('/project', wagner.invoke(function(Project) {
+    return function(req, res) {
+      Project.
+        find({}).
+        sort({ name: 1 }).
+        exec(function(error, projects) {
+          if (error) {
+            return res.
+              status(status.INTERNAL_SERVER_ERROR).
+              json({ error: error.toString() });
+          }
+          res.json({ projects: projects });
+        });
+    };
+  }));
+
+
 
   return api;
 };
+
 
 function handleOne(property, res, error, result) {
   if (error) {

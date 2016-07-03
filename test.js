@@ -5,9 +5,9 @@ var superagent = require('superagent');
 var wagner = require('wagner-core');
 
 var URL_ROOT = 'http://localhost:3000';
-var PRODUCT_ID = '000000000000000000000001';
 
-describe('Product API', function() {
+
+describe('RoadMapApp API', function() {
   var server;
   var Team;
   var Project;
@@ -70,7 +70,7 @@ describe('Product API', function() {
         name: 'Dev Project 2'
       },
       {
-        name: 'Meaning of Life',
+        name: 'Meaning of Life'
       }
     ];
 
@@ -101,7 +101,7 @@ describe('Product API', function() {
         assert.equal(res.status, 200);
         var result;
         assert.doesNotThrow(function() {
-            result = JSON.parse(res.text).user;
+            result = JSON.parse(res.text).users;
         });
         assert.equal(result.length, 1);
         done();
@@ -116,7 +116,7 @@ describe('Product API', function() {
         assert.equal(res.status, 200);
         var result;
         assert.doesNotThrow(function() {
-            result = JSON.parse(res.text).team;
+            result = JSON.parse(res.text).teams;
         });
         assert.equal(result.length, 2);
         done();
@@ -131,9 +131,9 @@ describe('Product API', function() {
         assert.equal(res.status, 200);
         var result;
         assert.doesNotThrow(function() {
-            result = JSON.parse(res.text).project;
+            result = JSON.parse(res.text).projects;
         });
-        assert.equal(result.data.cart.length, 3);
+        assert.equal(result.length, 3);
         done();
     });
   });
