@@ -9,8 +9,8 @@ var PRODUCT_ID = '000000000000000000000001';
 
 describe('Product API', function() {
   var server;
-  var Category;
-  var Product;
+  var Team;
+  var Project;
   var User;
 
   before(function() {
@@ -20,8 +20,8 @@ describe('Product API', function() {
     models = require('./models')(wagner);
 
     // Make models available in tests
-    Category = models.Category;
-    Product = models.Product;
+    Team = models.Team;
+    Project = models.Project;
     User = models.User;
 
     app.use(function(req, res, next) {
@@ -44,9 +44,9 @@ describe('Product API', function() {
 
   beforeEach(function(done) {
     // Make sure categories are empty before each test
-    Category.remove({}, function(error) {
+    Team.remove({}, function(error) {
       assert.ifError(error);
-      Product.remove({}, function(error) {
+      Project.remove({}, function(error) {
         assert.ifError(error);
         User.remove({}, function(error) {
           assert.ifError(error);
@@ -57,55 +57,33 @@ describe('Product API', function() {
   });
 
   beforeEach(function(done) {
-    var categories = [
-      { _id: 'Electronics' },
-      { _id: 'Phones', parent: 'Electronics' },
-      { _id: 'Laptops', parent: 'Electronics' },
-      { _id: 'Bacon' }
+    var teams = [
+      { name: 'Team 1' },
+      { name: 'Team 2' }
     ];
 
-    var products = [
+    var projects = [
       {
-        name: 'LG G4',
-        category: { _id: 'Phones', ancestors: ['Electronics', 'Phones'] },
-        price: {
-          amount: 300,
-          currency: 'USD'
-        }
+        name: 'Dev Project 1'
       },
       {
-        _id: PRODUCT_ID,
-        name: 'Asus Zenbook Prime',
-        category: { _id: 'Laptops', ancestors: ['Electronics', 'Laptops'] },
-        price: {
-          amount: 2000,
-          currency: 'USD'
-        }
+        name: 'Dev Project 2'
       },
       {
-        name: 'Flying Pigs Farm Pasture Raised Pork Bacon',
-        category: { _id: 'Bacon', ancestors: ['Bacon'] },
-        price: {
-          amount: 20,
-          currency: 'USD'
-        }
+        name: 'Meaning of Life',
       }
     ];
 
     var users = [{
       profile: {
-        username: 'vkarpov15',
-        picture: 'http://pbs.twimg.com/profile_images/550304223036854272/Wwmwuh2t.png'
-      },
-      data: {
-        oauth: 'invalid',
-        cart: []
+        username: 'jukka',
+        email: 'jukka@foo.bar'
       }
     }];
 
-    Category.create(categories, function(error) {
+    Team.create(teams, function(error) {
       assert.ifError(error);
-      Product.create(products, function(error) {
+      Project.create(projects, function(error) {
         assert.ifError(error);
         User.create(users, function(error) {
           assert.ifError(error);
@@ -115,51 +93,49 @@ describe('Product API', function() {
     });
   });
 
-  it('can save users cart', function(done) {
-    var url = URL_ROOT + '/me/cart';
-    superagent.
-      put(url).
-      send({
-        data: {
-          cart: [{ product: PRODUCT_ID, quantity: 1 }]
-        }
-      }).
-      end(function(error, res) {
-        assert.ifError(error);
-        assert.equal(res.status, status.OK);
-        User.findOne({}, function(error, user) {
-          assert.ifError(error);
-          assert.equal(user.data.cart.length, 1);
-          assert.equal(user.data.cart[0].product, PRODUCT_ID);
-          assert.equal(user.data.cart[0].quantity, 1);
-          done();
-        });
-      });
-  });
-
-  it('can load users cart', function(done) {
-    var url = URL_ROOT + '/me';
-
-    User.findOne({}, function(error, user) {
-      assert.ifError(error);
-      user.data.cart = [{ product: PRODUCT_ID, quantity: 1 }];
-      user.save(function(error) {
+  it('can get users', function(done) {
+    var url = URL_ROOT + '/user';
+    superagent.get(url, function(error, res) {
         assert.ifError(error);
 
-        superagent.get(url, function(error, res) {
-          assert.ifError(error);
-
-          assert.equal(res.status, 200);
-          var result;
-          assert.doesNotThrow(function() {
+        assert.equal(res.status, 200);
+        var result;
+        assert.doesNotThrow(function() {
             result = JSON.parse(res.text).user;
-          });
-          assert.equal(result.data.cart.length, 1);
-          assert.equal(result.data.cart[0].product.name, 'Asus Zenbook Prime');
-          assert.equal(result.data.cart[0].quantity, 1);
-          done();
         });
-      });
+        assert.equal(result.length, 1);
+        done();
     });
   });
+  
+  it('can get teams', function(done) {
+    var url = URL_ROOT + '/team';
+    superagent.get(url, function(error, res) {
+        assert.ifError(error);
+
+        assert.equal(res.status, 200);
+        var result;
+        assert.doesNotThrow(function() {
+            result = JSON.parse(res.text).team;
+        });
+        assert.equal(result.length, 2);
+        done();
+    });
+  });
+  
+    it('can get project', function(done) {
+    var url = URL_ROOT + '/project';
+    superagent.get(url, function(error, res) {
+        assert.ifError(error);
+
+        assert.equal(res.status, 200);
+        var result;
+        assert.doesNotThrow(function() {
+            result = JSON.parse(res.text).project;
+        });
+        assert.equal(result.data.cart.length, 3);
+        done();
+    });
+  });
+
 });
