@@ -123,7 +123,7 @@ describe('RoadMapApp API', function() {
     });
   });
   
-    it('can get project', function(done) {
+  it('can get project', function(done) {
     var url = URL_ROOT + '/project';
     superagent.get(url, function(error, res) {
         assert.ifError(error);
@@ -137,5 +137,20 @@ describe('RoadMapApp API', function() {
         done();
     });
   });
-
+  
+    it('can create user', function(done) {
+    var url = URL_ROOT + '/user';
+    superagent
+        .post(url)
+        .send({ name: 'TestUser', species: 'test@email.com' })
+        .end(function(error, res) {
+            assert.ifError(error);
+            assert.equal(res.status, 200);
+            
+            User.findOne({ 'userName': 'TestUser' }, 'userName email', function (err, user) {
+                assert.ifError(err);
+                assert.equal("test@email.com",user.email);
+            });
+        });
+    });
 });
