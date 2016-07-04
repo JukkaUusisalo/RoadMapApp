@@ -3,8 +3,15 @@ var express = require('express');
 var status = require('http-status');
 var superagent = require('superagent');
 var wagner = require('wagner-core');
+var common = require('./test-common');
 
-var URL_ROOT = 'http://localhost:3000';
+
+function importTest(name, path) {
+    describe(name, function () {
+        require(path);
+    });
+}
+
 
 
 describe('RoadMapApp API', function() {
@@ -13,6 +20,7 @@ describe('RoadMapApp API', function() {
   var Project;
   var User;
 
+
   before(function() {
     var app = express();
 
@@ -20,9 +28,12 @@ describe('RoadMapApp API', function() {
     models = require('./models')(wagner);
 
     // Make models available in tests
-    Team = models.Team;
-    Project = models.Project;
-    User = models.User;
+    common.Team = models.Team;
+    common.Project = models.Project;
+    common.User = models.User;
+    Team = common.Team;
+    Project = common.Project;
+    User = common.User;
 
     app.use(function(req, res, next) {
       User.findOne({}, function(error, user) {
@@ -92,129 +103,8 @@ describe('RoadMapApp API', function() {
       });
     });
   });
-
-  it('can get users', function(done) {
-    var url = URL_ROOT + '/user';
-    superagent.get(url, function(error, res) {
-        assert.ifError(error);
-
-        assert.equal(res.status, 200);
-        var result;
-        assert.doesNotThrow(function() {
-            result = JSON.parse(res.text).users;
-        });
-        assert.equal(result.length, 1);
-        done();
-    });
-  });
-  
-  it('can get teams', function(done) {
-    var url = URL_ROOT + '/team';
-    superagent.get(url, function(error, res) {
-        assert.ifError(error);
-
-        assert.equal(res.status, 200);
-        var result;
-        assert.doesNotThrow(function() {
-            result = JSON.parse(res.text).teams;
-        });
-        assert.equal(result.length, 2);        
-        done();
-    });    
-  });
-  
-  it('can get project', function(done) {
-    var url = URL_ROOT + '/project';
-    superagent.get(url, function(error, res) {
-        assert.ifError(error);
-
-        assert.equal(res.status, 200);
-        var result;
-        assert.doesNotThrow(function() {
-            result = JSON.parse(res.text).projects;
-        });
-        assert.equal(result.length, 3);        
-        done();
-    });    
-  });
-  
-    it('can create user', function(done) {
-    var url = URL_ROOT + '/user';
-    superagent
-        .post(url)
-        .send({'profile':{'username': 'TestUser', 'email': 'test@email.com'}})
-        .end(function(error, res) {
-            assert.ifError(error);
-            assert.equal(res.status, 200);
-            var retUser = res.body.user;
-            assert.equal(res.body.user.profile.email,'test@email.com');
-            done();           
-        });
-     // Have not idea why find below does not found user?
-     /*User.findOne({'profile.username': "TestUser"}, 'profile', function (err, user) {
-        assert.ifError(err);
-        assert.notEqual(user,null);
-        assert.equal(user.profile.email,"test@email.com");
-        done();
-        }); */ 
-    });
-    
-    
-    
-    it('Can retrieve user by name', function(done){
-        var url = URL_ROOT + '/user/jukka';
-        superagent.get(url, function(error, res) {
-            assert.ifError(error);
-            assert.equal(res.status, 200);
-            var result;
-            assert.doesNotThrow(function() {
-                result = JSON.parse(res.text).user;
-            });
-            assert.equal(result.profile.username,"jukka");            
-            done();
-        });        
-    });
-    
-    it('Can update user', function(done){
-        var url = URL_ROOT + '/user/jukka';
-        superagent.get(url, function(error, res) {
-            assert.ifError(error);
-            assert.equal(res.status, 200);
-            var result;
-            assert.doesNotThrow(function() {
-                result = JSON.parse(res.text).user;
-            });
-            assert.equal(result.profile.username,"jukka");   
-            result.profile.email = "foo@email.com";
-            superagent
-            .put(url)
-            .send(result)
-            .end(function(error, res) {
-                assert.ifError(error);
-                assert.equal(res.status, 200);
-            
-                User.findOne({ 'profile.username': 'jukka' }, 'profile', function (err, user) {
-                    assert.ifError(err);
-                    assert.equal("foo@email.com",user.profile.email); 
-                    done();
-                });
-            
-            });   
-        });        
-    });
-    
-    it('Can delete user', function(done) {
-       var url = URL_ROOT + '/user/jukka';
-       superagent.del(url)
-       .end(function(err,res) {
-           assert.ifError(err);
-           assert.equal(res.status, 200);
-           User.findOne({'profile.username':'jukka'},'profile',function (err, user){
-               assert.ifError(err);
-               assert.equal(user,null);
-               done();
-           });
-           
-       });
-    });           
+   
+    importTest("User Rest Api","./test/test-user.js");
+    importTest("Team Rest Api", './test/test-team.js');
+    importTest("Project Rest Api", './test/test-project.js');
 });
