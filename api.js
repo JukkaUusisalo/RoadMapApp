@@ -94,6 +94,27 @@ module.exports = function(wagner) {
     };   
   }));
   
+ api.delete('/user/:userName', wagner.invoke(function(User) {
+    return function(req, res) {
+      var query = {'profile.username':req.param.userName};
+      User.
+        findOneAndRemove(query)
+        .exec(function(error, user) {
+          if (error) {
+            return res.
+              status(status.INTERNAL_SERVER_ERROR).
+              json({ error: error.toString() });
+          }
+          if(user) {
+            return res.json({ user: user });
+          } else {
+            return res.status(status.NOT_FOUND).json({error:'User not found'});  
+          }
+        });
+    };   
+  }));
+
+  
   
   api.get('/team', wagner.invoke(function(Team) {
     return function(req, res) {

@@ -195,9 +195,10 @@ describe('RoadMapApp API', function() {
             
                 User.findOne({ 'profile.username': 'jukka' }, 'profile', function (err, user) {
                     assert.ifError(err);
-                    assert.equal("test@email.com",user.profile.email);                    
+                    assert.equal("test@email.com",user.profile.email); 
+                    done();
                 });
-            done();
+            
             });   
         });        
     });
@@ -211,8 +212,9 @@ describe('RoadMapApp API', function() {
            User.findOne({'profile.username':'jukka'},'profile',function (err, user){
                assert.ifError(err);
                assert.equal(user,null);
+               done();
            });
-           done();
+           
        });
     });           
 });
