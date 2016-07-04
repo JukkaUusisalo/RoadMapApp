@@ -200,7 +200,7 @@ describe('RoadMapApp API', function() {
        var url = URL_ROOT + '/user/jukka';
        superagent.del(url)
        .end(function(err,res) {
-           assert.ifError(error);
+           assert.ifError(err);
            assert.equal(res.status, 200);
            User.findOne({'username':'jukka'},'username',function (err, user){
                assert.ifError(err);
