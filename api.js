@@ -78,7 +78,7 @@ module.exports = function(wagner) {
       var query = {'profile.username':req.param.userName};
       var options = {'new':true,'upsert':false};
       User.
-        findOneAndUpdate(query,userData,options)
+        findOne(query)
         .exec(function(error, user) {
           if (error) {
             return res.
@@ -86,7 +86,19 @@ module.exports = function(wagner) {
               json({ error: error.toString() });
           }
           if(user) {
-            return res.json({ user: user });
+              var profile = userData.profile;
+              var data = userData.data;
+              if(profile) user.profile = profile;
+              if(data) user.data = data;
+              user.save(function (err, updateduser, numAffected) {
+                    if (err) {
+                        return res.
+                               status(status.INTERNAL_SERVER_ERROR).
+                               json({ error: err.toString() });
+                    }
+                    return res.json({ user: updateduser });
+              });
+            
           } else {
             return res.status(status.NOT_FOUND).json({error:'User not found'});  
           }

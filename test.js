@@ -185,17 +185,17 @@ describe('RoadMapApp API', function() {
                 result = JSON.parse(res.text).user;
             });
             assert.equal(result.profile.username,"jukka");   
-            result.profile.email = "test@email.com";
+            result.profile.email = "foo@email.com";
             superagent
             .put(url)
-            .send(result.profile)
+            .send(result)
             .end(function(error, res) {
                 assert.ifError(error);
                 assert.equal(res.status, 200);
             
                 User.findOne({ 'profile.username': 'jukka' }, 'profile', function (err, user) {
                     assert.ifError(err);
-                    assert.equal("test@email.com",user.profile.email); 
+                    assert.equal("foo@email.com",user.profile.email); 
                     done();
                 });
             
