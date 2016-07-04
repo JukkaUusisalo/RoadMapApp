@@ -118,9 +118,9 @@ describe('RoadMapApp API', function() {
         assert.doesNotThrow(function() {
             result = JSON.parse(res.text).teams;
         });
-        assert.equal(result.length, 2);
+        assert.equal(result.length, 2);        
         done();
-    });
+    });    
   });
   
   it('can get project', function(done) {
@@ -133,24 +133,80 @@ describe('RoadMapApp API', function() {
         assert.doesNotThrow(function() {
             result = JSON.parse(res.text).projects;
         });
-        assert.equal(result.length, 3);
+        assert.equal(result.length, 3);        
         done();
-    });
+    });    
   });
   
     it('can create user', function(done) {
     var url = URL_ROOT + '/user';
     superagent
         .post(url)
-        .send({ name: 'TestUser', species: 'test@email.com' })
+        .send({ username: 'TestUser', emai: 'test@email.com' })
         .end(function(error, res) {
             assert.ifError(error);
             assert.equal(res.status, 200);
             
-            User.findOne({ 'userName': 'TestUser' }, 'userName email', function (err, user) {
+            User.findOne({ 'username': 'TestUser' }, 'username email', function (err, user) {
                 assert.ifError(err);
                 assert.equal("test@email.com",user.email);
             });
-        });
+            done();
+        });    
     });
+    
+    it('Can retrieve user by name', function(done){
+        var url = URL_ROOT + '/user/jukka';
+        superagent.get(url, function(error, res) {
+            assert.ifError(error);
+            assert.equal(res.status, 200);
+            var result;
+            assert.doesNotThrow(function() {
+                result = JSON.parse(res.text).user;
+            });
+            assert.equal(result.username,"jukka");            
+            done();
+        });        
+    });
+    
+    it('Can update user', function(done){
+        var url = URL_ROOT + '/user/jukka';
+        superagent.get(url, function(error, res) {
+            assert.ifError(error);
+            assert.equal(res.status, 200);
+            var result;
+            assert.doesNotThrow(function() {
+                result = JSON.parse(res.text).user;
+            });
+            assert.equal(result.username,"jukka");   
+            result.email = "test@email.com";
+            superagent
+            .post(url)
+            .send(result)
+            .end(function(error, res) {
+                assert.ifError(error);
+                assert.equal(res.status, 200);
+            
+                User.findOne({ 'username': 'jukka' }, 'username email', function (err, user) {
+                    assert.ifError(err);
+                    assert.equal("test@email.com",user.email);                    
+                });
+            done();
+            });   
+        });        
+    });
+    
+    it('Can delete user', function(done) {
+       var url = URL_ROOT + '/user/jukka';
+       superagent.del(url)
+       .end(function(err,res) {
+           assert.ifError(error);
+           assert.equal(res.status, 200);
+           User.findOne({'username':'jukka'},'username',function (err, user){
+               assert.ifError(err);
+               assert.equal(user,null);
+           });
+           done();
+       });
+    });           
 });
