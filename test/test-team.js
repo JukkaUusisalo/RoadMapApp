@@ -51,7 +51,7 @@ it('can create team', function(done) {
 });
 
 it('Can retrieve team by name', function(done){
-    var url = URL_ROOT + '/team/Team 1';
+    var url = URL_ROOT + '/team/Team+1';
     superagent.get(url, function(error, res) {
         assert.ifError(error);
         assert.equal(res.status, 200);
@@ -59,13 +59,14 @@ it('Can retrieve team by name', function(done){
         assert.doesNotThrow(function() {
             result = JSON.parse(res.text).team;
         });
-        assert.equal(result.team.name,"Team 1");            
+        assert.notEqual(result,null);
+        assert.equal(result.name,"Team 1");            
         done();
     });        
 });
     
 it('Can update team', function(done){
-    var url = URL_ROOT + '/team/Team 1';
+    var url = URL_ROOT + '/team/Team+1';
     superagent.get(url, function(error, res) {
         assert.ifError(error);
         assert.equal(res.status, 200);
@@ -73,7 +74,8 @@ it('Can update team', function(done){
         assert.doesNotThrow(function() {
             result = JSON.parse(res.text).team;
         });
-        assert.equal(result.team.name,"Team 1");   
+        assert.notEqual(result,null);
+        assert.equal(result.name,"Team 1");   
         result.numberOfParallelProjects = 2;
         superagent
         .put(url)

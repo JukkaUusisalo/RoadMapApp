@@ -12,14 +12,17 @@ var precisions = "Half Quarter Monthly".split(' ');
 
 module.exports = new mongoose.Schema({
     name: {
-        type: String
+        type: String,
+        required: true
     },
     numberOfParallelProjects: {
-        type: Number
+        type: Number,
+        default: 4
     },
     roadMapPrecision: {
         type: String,
-        enum: precisions
+        enum: precisions,
+        default: 'Quarter'
     },
     users : [{
         user: {
