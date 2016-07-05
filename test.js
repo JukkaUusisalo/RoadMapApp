@@ -24,13 +24,6 @@ describe('RoadMapApp API', function() {
   before(function() {
     var app = express();
 
-    // Bootstrap server
-    models = require('./models')(wagner);
-
-    // Make models available in tests
-    common.Team = models.Team;
-    common.Project = models.Project;
-    common.User = models.User;
     Team = common.Team;
     Project = common.Project;
     User = common.User;

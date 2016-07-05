@@ -9,7 +9,7 @@ var URL_ROOT = common.URL_ROOT;
 // Make models available in tests
 var User = common.User;
 
-  it('can get users', function(done) {
+ it('can get users', function(done) {
     var url = URL_ROOT + '/user';
     superagent.get(url, function(error, res) {
         assert.ifError(error);
