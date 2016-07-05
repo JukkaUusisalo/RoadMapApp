@@ -36,7 +36,9 @@ describe('RoadMapApp API', function() {
       });
     });
 
-    app.use(require('./api')(wagner));
+    app.use(require('./api/api-user')(wagner));
+    app.use(require('./api/api-team')(wagner));
+    app.use(require('./api/api-project')(wagner));
 
     server = app.listen(3000);
   });
