@@ -5,17 +5,21 @@
  */
 
 var mongoose = require('mongoose');
-var User = require('./user');
 
-var precisions = "Half Quarter Monthly".split(' ');
 
 module.exports = new mongoose.Schema({
     name: {
-        type: String
+        type: String,
+        required: true
     },
     size: {
         type: Number,
-        max: 100
+        max: 100,
+        default: 0
+    },
+    startDate: {
+        type: Date,
+        default: Date.now
     }
 });
 
