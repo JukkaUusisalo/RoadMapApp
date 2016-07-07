@@ -6,12 +6,12 @@ function setupAuth(User, app) {
 
   // High level serialize/de-serialize configuration for passport
   passport.serializeUser(function(user, done) {
-    done(null, user.username);
+    done(null, user._id);
   });
 
-  passport.deserializeUser(function(user, done) {
+  passport.deserializeUser(function(id, done) {
     User.
-      findOne({ username : username }).
+      findOne({ _id : id }).
       exec(done);
   });
   
@@ -33,7 +33,8 @@ function setupAuth(User, app) {
                 { 'data.oauth': profile.id },
                 {
                     $set: {
-                            'profile.username': profile.emails[0].value,
+                            
+                            'profile.username': profile.username,
                             'profile.email': profile.emails[0].value,
                             'profile.picture': picture
                     }
