@@ -1,0 +1,8 @@
+
+{
+    "github": {
+        "clientID": "GITHUB_CLIENT_ID",
+        "clientSecret": "GITHUB_CLIENT_SECRET",
+        "callbackURL": "http://localhist:3000/auth/github/callback"
+    }
+}

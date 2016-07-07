@@ -5,6 +5,10 @@ require('./models')(wagner);
 
 var app = express();
 
+wagner.invoke(require('./auth'), { app: app });
+
+app.use(express.static('./ui'));
+
 app.use('/api/v1', require('./api/api-user')(wagner));
 app.use('/api/v1', require('./api/api-team')(wagner));
 app.use('/api/v1', require('./api/api-project')(wagner));

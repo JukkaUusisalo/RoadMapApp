@@ -10,8 +10,8 @@ module.exports = new mongoose.Schema({
     },
     picture: {
       type: String,
-      required: false,
-      match: /^http:\/\//i
+      required: false
+      //match: /^http:\/\//i
     },
     email: {
       type: String,
@@ -24,6 +24,10 @@ module.exports = new mongoose.Schema({
     }    
   },
   data: {
+    oauth: {
+        type: String, 
+        required: false 
+    },
     teams: [{
       team: {
         type: mongoose.Schema.Types.ObjectId,
