@@ -5,7 +5,9 @@
     "http-status": "0.1.8",
     "mongoose": "4.0.3",
     "underscore": "1.5.2",
-    "wagner-core": "0.1.0"
+    "wagner-core": "0.1.0",
+    "passport": "0.3.2",
+    "passport-github": "0.1.5"
   },
   "devDependencies": {
     "mocha": "2.2.4",
