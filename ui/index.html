@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" >
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Angular Material style sheet -->
-  <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
-  <link rel="stylesheet" type="text/css" href="css/roadmapapp.css"> 
+    <title>RoadMapApp</title> 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Angular Material style sheet -->
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
+    <link rel="stylesheet" type="text/css" href="css/roadmapapp.css"> 
 </head>
 <body>
-    <div class="menu">
-        <a href="/auth/github">Login with GitHub</a>
-    </div><div>
 <div ng-controller="DemoBasicCtrl as ctrl" ng-cloak="" class="menuBardemoBasicUsage" ng-app="RoadMapApp">
   <md-toolbar class="md-menu-toolbar">
     <div layout="row">
@@ -20,7 +18,7 @@
                 <button ng-click="$mdOpenMenu()">Sign In</button>
                     <md-menu-content>
                         <md-menu-item>
-                            <md-button ng-click="ctrl.sampleAction('New Document', $event)">GitHib</md-button>
+                            <md-button href="/auth/github">GitHib</md-button>
                         </md-menu-item>                    
                         <md-menu-item>
                             <md-button ng-click="ctrl.sampleAction('New Document', $event)">Facebook</md-button>
@@ -53,13 +51,26 @@
       </div>
     </div>
   </md-toolbar>
-
-  <md-content class="page-container">
-    <md-card class="page">
-
-    </md-card>
-  </md-content>
-</div>
+    <md-content>
+    <div layout="row">
+        <div flex>
+            <h2>Teams</h2>
+            <ul>
+                <li>Dev 1</li>
+                <li>Dev 2</li>
+            </ul>            
+        </div>
+        <div flex>
+            <div layout="column">
+                <div flex><h2>Dev 2</h2></div>
+                <div flex>Here is place to roadmap!</div>    
+            </div>
+        </div>
+        
+    </div>
+    </md-content>
+    
+  </div>
       
   <!-- Angular Material requires Angular.js Libraries -->
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
