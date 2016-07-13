@@ -9,7 +9,13 @@
 </head>
 <body>
 <div ng-controller="DemoBasicCtrl as ctrl" ng-cloak="" class="menuBardemoBasicUsage" ng-app="RoadMapApp">
-  <md-toolbar class="md-menu-toolbar">
+    <md-content>
+        <div layout="column>">
+            {{userName}}
+        </div>
+     </md-content>
+
+    <md-toolbar class="md-menu-toolbar">
     <div layout="row">
       <div>
         <h2 class="md-toolbar-tools">RoadMapApp</h2>

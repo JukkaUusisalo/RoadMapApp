@@ -7,6 +7,14 @@ module.exports = function(wagner) {
 
   api.use(bodyparser.json());
   
+    api.get('/me', function(req, res) {
+        if (!req.user) {
+            return res.status(status.UNAUTHORIZED).json({ error: 'Not logged in' });
+        }
+        var user = req.user;
+        res.json({ user: user });;
+    });
+  
   api.get('/user', wagner.invoke(function(User) {
     return function(req, res) {
       User.

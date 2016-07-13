@@ -11,10 +11,7 @@
     //var roadMapApp = angular.module('RoadMapApp',['ngMaterial','ngMessages','ngRoute', 'material.svgAssetsCache']);
     var roadMapApp = angular.module('RoadMapApp',['ngMaterial']);
     
-    roadMapApp.config(function($mdIconProvider) {
-      $mdIconProvider.defaultIconSet('img/icons/sets/core-icons.svg', 24);
-    })
-    .controller('DemoBasicCtrl', function DemoCtrl($mdDialog) {
+    roadMapApp.controller('DemoBasicCtrl', function DemoCtrl($mdDialog) {
         this.settings = {
             printLayout: true,
             showRuler: true,
@@ -22,12 +19,18 @@
             presentationMode: 'edit'
         };
 
-    this.sampleAction = function(name, ev) {
-      $mdDialog.show($mdDialog.alert()
-        .title(name)
-        .textContent('You triggered the "' + name + '" action')
-        .ok('Great')
-        .targetEvent(ev)
-      );
-    };
-  });
+        this.sampleAction = function(name, ev) {
+            $mdDialog.show($mdDialog.alert()
+            .title(name)
+            .textContent('You triggered the "' + name + '" action')
+            .ok('Great')
+            .targetEvent(ev)
+            );
+        };
+    });
+    
+    roadMapApp.controller('DemoBasicCtrl', function($scope, $http) {
+        $http.get("/api/v1/me").then(function (response) {
+            $scope.userName = response.data.user.profile.username;
+        });
+    });

@@ -61,10 +61,8 @@ function setupAuth(User, app) {
     passport.authenticate('github', { scope: ['email'] }));
 
   app.get('/auth/github/callback',
-    passport.authenticate('github', { failureRedirect: '/fail' }),
-    function(req, res) {
-      res.send('Welcome, ' + req.user.profile.username);
-    });
+    passport.authenticate('github', { successRedirect: '/',
+                                      failureRedirect: '/' }));
 }
 
 module.exports = setupAuth;
