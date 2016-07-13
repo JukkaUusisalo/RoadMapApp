@@ -32,5 +32,6 @@
     roadMapApp.controller('DemoBasicCtrl', function($scope, $http) {
         $http.get("/api/v1/me").then(function (response) {
             $scope.userName = response.data.user.profile.username;
+            $scope.loggedIn = $scope.userName != null;
         });
     });
