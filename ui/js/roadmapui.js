@@ -1,15 +1,28 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-   /**
-     * You must include the dependency on 'ngMaterial' 
-     */
+
+    var roadMapApp = angular.module('RoadMapApp',['ngMaterial','ngRoute']);
     
-    //var roadMapApp = angular.module('RoadMapApp',['ngMaterial','ngMessages','ngRoute', 'material.svgAssetsCache']);
-    var roadMapApp = angular.module('RoadMapApp',['ngMaterial']);
+    roadMapApp.config(function($routeProvider) {
+        $routeProvider
+
+            // route for the home page
+            .when('/', {
+                templateUrl : 'home.html',
+                controller  : 'DemoBasicCtrl'
+            })
+
+            // route for the about page
+            .when('/createTeam', {
+                templateUrl : 'createteam.html',
+                controller  : 'createTeamController'
+            })
+            // login fails
+            .when('/fail', {
+                templateUrl : 'ui/fail.html',
+                controller  : 'loginFailController'
+            });
+
+    });
     
     roadMapApp.controller('DemoBasicCtrl', function DemoCtrl($mdDialog) {
         this.settings = {
@@ -29,9 +42,19 @@
         };
     });
     
+    roadMapApp.controller('createTeamController', function($scope) {
+       $scope.message = 'Create Team!'; 
+    });
+    
+    roadMapApp.controller('loginFailController', function($scope) {
+       $scope.message = 'Please, Sign In.'; 
+    });
+    
     roadMapApp.controller('DemoBasicCtrl', function($scope, $http) {
         $http.get("/api/v1/me").then(function (response) {
             $scope.userName = response.data.user.profile.username;
-            $scope.loggedIn = $scope.userName != null;
+            $scope.loggedIn = $scope.userName !== null;
         });
     });
+    
+    
