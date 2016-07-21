@@ -1,6 +1,20 @@
 <div>
-        <h1>This Page</h1>
+    <div>
+    <form name="createTeamForm" action="#" ng-controller="createTeamContoller" ng-submit="submitForm()">
 
-        <p>{{ message }}</p>
+        Team name:    <br/><input type="text" ng-model="form.name">    <br/><br/>
+        Max WIP: <br/><input type="text" ng-model="form.numberOfParallelProjects"> <br/><br/>
+
+        <input type="radio" ng-model="form.roadMapPrecision" value="Half" />Half<br/>
+        <input type="radio" ng-model="form.roadMapPrecision" value="Quarter" />Quarter<br/>
+        <input type="radio" ng-model="form.roadMapPrecision" value="Monthly" />Monthly<br/>
+
+        <input type="submit" ngClick="Submit" >
+
+    </form>        
+    </div>
+
+    <div>    
         <md-button class="md-raised" href="#/">Home</md-button>
+    </div>
 </div>

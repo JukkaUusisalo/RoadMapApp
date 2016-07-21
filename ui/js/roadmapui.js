@@ -24,22 +24,19 @@
 
     });
     
-    roadMapApp.controller('DemoBasicCtrl', function DemoCtrl($mdDialog) {
+    roadMapApp.controller('DemoBasicCtrl', function DemoCtrl($scope,$http) {
         this.settings = {
             printLayout: true,
             showRuler: true,
             showSpellingSuggestions: true,
             presentationMode: 'edit'
         };
+        
+        $http.get("/api/v1/team").then(function (response) {
+            $scope.teamList = response.data.teams;   
+            console.log(response.data);
+        });
 
-        this.sampleAction = function(name, ev) {
-            $mdDialog.show($mdDialog.alert()
-            .title(name)
-            .textContent('You triggered the "' + name + '" action')
-            .ok('Great')
-            .targetEvent(ev)
-            );
-        };
     });
     
     roadMapApp.controller('createTeamController', function($scope) {
@@ -55,6 +52,30 @@
             $scope.userName = response.data.user.profile.username;
             $scope.loggedIn = $scope.userName !== null;
         });
+        
+        $http.get("/api/v1/team").then(function (response) {
+            $scope.teamList = response.data.teams;   
+            console.log(response.data);
+        });
+
     });
+    
+    roadMapApp.controller('createTeamContoller', function($scope, $http) {
+        
+        $scope.submitForm = function() {
+            $http({
+                url: "/api/v1/team",
+                data: JSON.stringify($scope.form),
+                method: 'POST',
+                headers : 
+                    {'Content-Type':'application/json; charset=UTF-8'}
+            }).success(function(data){
+                console.log("OK", data);
+            }).error(function(err){
+                "ERR", console.log(err);
+            });                
+        };
+    });
+
     
     

@@ -1,9 +1,13 @@
 <div flex>
-    <h2>Teams</h2>
-    <ul>
-        <li>Dev 1</li>
-        <li>Dev 2</li>
-    </ul>            
+    <md-list flex>
+        <md-subheader class="md-no-sticky">Teams</md-subheader>
+        <md-list-item class="md-1-line" ng-repeat="team in teamList" ng-click="null">
+          <div class="md-list-item-text" layout="column">
+            {{ team.name }}
+          </div>
+        </md-list-item>
+    </md-list>
+        
 </div>
 <div flex>
     <div layout="column">
