@@ -49,8 +49,10 @@
     
     roadMapApp.controller('DemoBasicCtrl', function($scope, $http) {
         $http.get("/api/v1/me").then(function (response) {
-            $scope.userName = response.data.user.profile.username;
-            $scope.loggedIn = $scope.userName !== null;
+            $scope.user = response.data.user;            
+            $scope.loggedIn = 
+                    ($scope.user !==null) &&
+                    ($scope.user.profile.username !== null);
         });
         
         $http.get("/api/v1/team").then(function (response) {
@@ -62,10 +64,16 @@
     
     roadMapApp.controller('createTeamContoller', function($scope, $http) {
         
+        
         $scope.submitForm = function() {
+
+            var teamData = $scope.form;
+            var administrators = [{user:$scope.user}];
+            teamData['adminUsers'] = administrators;           
+
             $http({
                 url: "/api/v1/team",
-                data: JSON.stringify($scope.form),
+                data: JSON.stringify(teamData),
                 method: 'POST',
                 headers : 
                     {'Content-Type':'application/json; charset=UTF-8'}
