@@ -27,7 +27,7 @@ module.exports = function(wagner) {
     api.get('/team/:teamName', wagner.invoke(function(Team) {
         return function(req, res) {
             Team.
-            findOne({'name':req.param.teamName})
+            findOne({'name':req.params.teamName})
             .exec(function(error, team) {
                 if (error) {
                     return res.

@@ -59,6 +59,13 @@
             $scope.teamList = response.data.teams;   
             console.log(response.data);
         });
+        
+        $scope.selectTeam = function (teamName) {
+            $http.get("/api/v1/team/"+teamName).then(function (response) {
+                $scope.currentTeam = response.data.team;   
+                console.log(response.data);
+            });           
+        }
 
     });
     

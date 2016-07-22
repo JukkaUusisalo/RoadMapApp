@@ -1,7 +1,7 @@
 <div flex>
     <md-list flex>
         <md-subheader class="md-no-sticky">Teams</md-subheader>
-        <md-list-item class="md-1-line" ng-repeat="team in teamList" ng-click="null">
+        <md-list-item class="md-1-line" ng-repeat="team in teamList" ng-click="selectTeam(team.name)">
           <div class="md-list-item-text" layout="column">
             {{ team.name }}
           </div>
@@ -11,7 +11,7 @@
 </div>
 <div flex>
     <div layout="column">
-        <div flex><h2>Dev 2</h2></div>
+        <div flex><h2>{{ currentTeam.name }} </h2></div>
         <div flex>Here is place to roadmap!</div>    
     </div>
 </div>
