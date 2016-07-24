@@ -11,11 +11,16 @@
                 controller  : 'DemoBasicCtrl'
             })
 
-            // route for the about page
+            
             .when('/createTeam', {
                 templateUrl : 'createteam.html',
                 controller  : 'createTeamController'
             })
+           .when('/createProject', {
+                templateUrl : 'createproject.html',
+                controller  : 'createProjectController'
+            })
+
             // login fails
             .when('/fail', {
                 templateUrl : 'ui/fail.html',
@@ -43,6 +48,7 @@
        $scope.message = 'Create Team!'; 
     });
     
+    
     roadMapApp.controller('loginFailController', function($scope) {
        $scope.message = 'Please, Sign In.'; 
     });
@@ -65,7 +71,7 @@
                 $scope.currentTeam = response.data.team;   
                 console.log(response.data);
             });           
-        }
+        };
 
     });
     
@@ -88,9 +94,33 @@
                 console.log("OK", data);
             }).error(function(err){
                 "ERR", console.log(err);
-            });                
+            });
+            
+            
         };
     });
+    
+    roadMapApp.controller('createProjectContoller', function($scope, $http) {
+            
+        $scope.submitProjectForm = function() {
+
+            
+            var projectData = $scope.form;
+            $http({
+                url: "/api/v1/project",
+                data: JSON.stringify(projectData),
+                method: 'POST',
+                headers : 
+                    {'Content-Type':'application/json; charset=UTF-8'}
+            }).success(function(data){
+                console.log("OK", data);
+            }).error(function(err){
+                "ERR", console.log(err);
+            });    
+            
+        };
+    });
+
 
     
     
